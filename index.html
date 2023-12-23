@@ -8,80 +8,20 @@
   <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
+  <button onclick="client.requestCode();">Authorize with Google</button>
   <button onclick="listFiles()">List Files</button>
-  <script>
-    // Zakresy uprawnień, w tym przypadku dostęp do Google Drive
-    
-
-    function handleCredentialResponse(response) {
-      // Obsłuż odpowiedź autentykacji
-      if (response.credential) {
-        // Tutaj uzyskaj dostęp do Google Drive API lub innego API
-        // Pamiętaj, aby poprawnie skonfigurować uprawnienia i autoryzacje w konsoli Google Cloud
-        // Możesz wykorzystać uzyskany credential do autoryzacji gapi
-        gapi.client.authorize({
-          client_id: response.client_id,
-          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
-          scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-          immediate: true,  // Ustaw 'immediate' na true, aby uzyskać dostęp bez wyświetlania okna dialogowego
-          session_state: response.credential,
-        }, function (authResult) {
-          if (authResult && !authResult.error) {
-            console.log('Authorized successfully');
-            listFiles();
-          } else {
-            console.error('Authorization failed:', authResult.error);
-          }
-        });
-      }
-    }
-
-   
-
-    // Ta funkcja będzie wywoływana po pomyślnym zalogowaniu
-    function onSignIn(response) {
-      console.log('Signed in:', response);
-      // Dodaj autoryzację gapi za pomocą credential z response
-      handleCredentialResponse(response);
-    }
-
-    function listFiles() {
-      // Wywołaj odpowiednie funkcje na podstawie uzyskanych uprawnień
-      // Na przykład, możesz pobrać listę plików z Google Drive
-      gapi.client.drive.files.list({
-        'pageSize': 10,
-        'fields': 'files(id, name)',
-      }).then(function(response) {
-        const files = response.result.files;
-        if (files && files.length > 0) {
-          console.log('Files:');
-          files.forEach(file => {
-            console.log(`${file.name} (${file.id})`);
-          });
-        } else {
-          console.log('No files found.');
-        }
-      });
-    }
-  </script>
-  <div id="g_id_onload"
-     data-client_id="728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com"
-     data-context="signup"
-     data-ux_mode="popup"
-     data-callback="onSignIn"
-     data-auto_select="true"
-     data-itp_support="true"
-     data-scope="https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile">
-</div>
-
-<div class="g_id_signin"
-     data-type="standard"
-     data-shape="rectangular"
-     data-theme="outline"
-     data-text="signin"
-     data-size="large"
-     data-logo_alignment="left">
-</div>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+ <script>
+const client = google.accounts.oauth2.initCodeClient({
+  client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
+  scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+  ux_mode: 'popup',
+  callback: (response) => {
+    
+      console.log('Auth code response: ' + response);
+   
+  },
+});
+ </script>
 </body>
 </html>
