@@ -43,7 +43,7 @@
           tokenClient = google.accounts.oauth2.initTokenClient({
               client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
               scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-              prompt: 'consent',
+              prompt: 'none',
               callback: '',  // defined at request time in await/promise scope.
           });
           resolve();
