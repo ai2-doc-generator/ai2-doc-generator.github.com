@@ -5,7 +5,7 @@
   <h1>GAPI with GIS async/await</h1>
   <button id="showEventsBtn" onclick="showEvents();">Show Calendar</button><br><br>
   <button id="revokeBtn" onclick="revokeToken();">Revoke access token</button>
-
+  <pre id="content" style="white-space: pre-wrap;"></pre>
   <script>
 
     const gapiLoadPromise = new Promise((resolve, reject) => {
@@ -32,8 +32,8 @@
       await gapi.client.init({
         // NOTE: OAuth2 'scope' and 'client_id' parameters have moved to initTokenClient().
       })
-      .then(function() {  // Load the Calendar API discovery document.
-        gapi.client.load('https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest');
+      .then(function() {  // Load the Drive API discovery document.
+        gapi.client.load('https://www.googleapis.com/discovery/v1/apis/drive/v3/rest');
       });
 
       // Now load the GIS client
@@ -42,7 +42,7 @@
         try {
           tokenClient = google.accounts.oauth2.initTokenClient({
               client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
-              scope: 'https://www.googleapis.com/auth/calendar.readonly',
+              scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
               prompt: 'consent',
               callback: '',  // defined at request time in await/promise scope.
           });
@@ -84,16 +84,27 @@
       }
     }
 
-    function showEvents() {
-
-      // Try to fetch a list of Calendar events. If a valid access token is needed,
-      // prompt to obtain one and then retry the original request.
-      gapi.client.calendar.events.list({ 'calendarId': 'primary' })
-      .then(calendarAPIResponse => console.log(JSON.stringify(calendarAPIResponse)))
-      .catch(err  => getToken(err))  // for authorization errors obtain an access token
-      .then(retry => gapi.client.calendar.events.list({ 'calendarId': 'primary' }))
-      .then(calendarAPIResponse => console.log(JSON.stringify(calendarAPIResponse)))
-      .catch(err  => console.log(err)); // cancelled by user, timeout, etc.
+   async function showEvents() {
+      let response;
+        try {
+          response = await gapi.client.drive.files.list({
+            'pageSize': 10,
+            'fields': 'files(id, name)',
+          });
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
+        const files = response.result.files;
+        if (!files || files.length == 0) {
+          document.getElementById('content').innerText = 'No files found.';
+          return;
+        }
+        // Flatten to string to display
+        const output = files.reduce(
+            (str, file) => `${str}${file.name} (${file.id})\n`,
+            'Files:\n');
+        document.getElementById('content').innerText = output;
     }
 
     function revokeToken() {
