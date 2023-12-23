@@ -19,11 +19,12 @@
         // Tutaj uzyskaj dostęp do Google Drive API lub innego API
         // Pamiętaj, aby poprawnie skonfigurować uprawnienia i autoryzacje w konsoli Google Cloud
         // Możesz wykorzystać uzyskany credential do autoryzacji gapi
-        gapi.auth.authorize({
-          'client_id': '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
-          'scope': 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-          'immediate': true,  // Ustaw 'immediate' na true, aby uzyskać dostęp bez wyświetlania okna dialogowego
-          'session_state': response.credential,
+        gapi.auth.init({
+          client_id: response.client_id,
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+          scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+          immediate: true,  // Ustaw 'immediate' na true, aby uzyskać dostęp bez wyświetlania okna dialogowego
+          session_state: response.credential,
         }, function (authResult) {
           if (authResult && !authResult.error) {
             console.log('Authorized successfully');
