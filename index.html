@@ -1,16 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Web App</title>
-    <!-- Skrypt do ładowania Google Identity Services -->
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Drive API Example</title>
+  <!-- Dodaj bibliotekę Google API -->
+  <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
-    <!-- Wklej skopiowany kod HTML poniżej -->
- 
-<div id="g_id_onload"
+  <button onclick="listFiles()">List Files</button>
+  <script>
+    // Zakresy uprawnień, w tym przypadku dostęp do Google Drive
+    
+
+    function handleCredentialResponse(response) {
+      // Obsłuż odpowiedź autentykacji
+      if (response.credential) {
+        // Tutaj uzyskaj dostęp do Google Drive API lub innego API
+        // Pamiętaj, aby poprawnie skonfigurować uprawnienia i autoryzacje w konsoli Google Cloud
+        // Możesz wykorzystać uzyskany credential do autoryzacji gapi
+        gapi.auth.authorize({
+          'client_id': '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
+          'scope': 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+          'immediate': true,  // Ustaw 'immediate' na true, aby uzyskać dostęp bez wyświetlania okna dialogowego
+          'session_state': response.credential,
+        }, function (authResult) {
+          if (authResult && !authResult.error) {
+            console.log('Authorized successfully');
+            listFiles();
+          } else {
+            console.error('Authorization failed:', authResult.error);
+          }
+        });
+      }
+    }
+
+   
+
+    // Ta funkcja będzie wywoływana po pomyślnym zalogowaniu
+    function onSignIn(response) {
+      console.log('Signed in:', response);
+      // Dodaj autoryzację gapi za pomocą credential z response
+      handleCredentialResponse(response);
+    }
+
+    function listFiles() {
+      // Wywołaj odpowiednie funkcje na podstawie uzyskanych uprawnień
+      // Na przykład, możesz pobrać listę plików z Google Drive
+      gapi.client.drive.files.list({
+        'pageSize': 10,
+        'fields': 'files(id, name)',
+      }).then(function(response) {
+        const files = response.result.files;
+        if (files && files.length > 0) {
+          console.log('Files:');
+          files.forEach(file => {
+            console.log(`${file.name} (${file.id})`);
+          });
+        } else {
+          console.log('No files found.');
+        }
+      });
+    }
+  </script>
+  <div id="g_id_onload"
      data-client_id="728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com"
      data-context="signup"
      data-ux_mode="popup"
@@ -28,26 +81,6 @@
      data-size="large"
      data-logo_alignment="left">
 </div>
-
-    <!-- Inne elementy strony -->
-
-    <!-- Skrypt do obsługi zdarzeń uwierzytelniania -->
-    <script src="https://accounts.google.com/gsi/client" async></script>
-    <script>
-        // Funkcja wywoływana po zalogowaniu użytkownika
-        function onSignIn(response) {
-            console.log('Zalogowano:', response);
-            // Dodaj dowolną logikę obsługi zalogowania
-        }
-
-        // Funkcja wywoływana po wylogowaniu użytkownika
-        function onSignOut() {
-            console.log('Wylogowano');
-            // Dodaj dowolną logikę obsługi wylogowania
-        }
-
-        // Inicjalizacja Google Identity Services
-       
-    </script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>
