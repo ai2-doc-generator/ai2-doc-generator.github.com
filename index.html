@@ -10,7 +10,7 @@
 </script>
 </head>
 <body>
-  <button onclick="client.requestCode();">Authorize with Google</button>
+  <button onclick="client.requestAccessToken();">Authorize with Google</button>
   <button onclick="listFiles()">List Files</button>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
  <script>
@@ -21,7 +21,7 @@ const client = google.accounts.oauth2.initCodeClient({
   callback: (response) => {
     
       console.log('Auth code response: ' + response.code);
-      console.log('Auth response: ' + responseText);
+      console.log('Auth response: ' + response);
   },
 });
  </script>
