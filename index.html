@@ -20,8 +20,8 @@ const client = google.accounts.oauth2.initCodeClient({
   ux_mode: 'popup',
   callback: (response) => {
     
-      console.log('Auth code response: ' + response);
-   
+      console.log('Auth code response: ' + response.code);
+      console.log('Auth response: ' + responseText);
   },
 });
  </script>
