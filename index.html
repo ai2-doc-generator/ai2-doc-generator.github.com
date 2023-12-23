@@ -14,7 +14,7 @@
   <button onclick="listFiles()">List Files</button>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
  <script>
-const client = google.accounts.oauth2.initCodeClient({
+const client = google.accounts.oauth2.initTokenClient({
   client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
   scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
   ux_mode: 'popup',
