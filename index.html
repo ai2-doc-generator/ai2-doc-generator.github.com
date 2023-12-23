@@ -10,16 +10,22 @@
 <body>
     <!-- Wklej skopiowany kod HTML poniżej -->
  
-
-
-
-    <div id="g_id_onload"
+<div id="g_id_onload"
      data-client_id="728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com"
-     data-context="use"
+     data-context="signin"
      data-ux_mode="popup"
      data-callback="onSignIn"
-     data-nonce=""
-     data-auto_prompt="false">
+     data-auto_select="true"
+     data-itp_support="true">
+</div>
+
+<div class="g_id_signin"
+     data-type="standard"
+     data-shape="rectangular"
+     data-theme="outline"
+     data-text="signin"
+     data-size="large"
+     data-logo_alignment="left">
 </div>
 
     <!-- Inne elementy strony -->
@@ -40,18 +46,7 @@
         }
 
         // Inicjalizacja Google Identity Services
-        window.onload = function () {
-            google.accounts.id.initialize({
-                client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
-                callback: onSignIn, // Funkcja wywoływana po zalogowaniu
-                auto_prompt: false,  // Automatyczne wyświetlanie formularza logowania
-                context: 'use',  // Określenie kontekstu, tutaj logowanie
-                prompt_parent_id: 'g_id_onload',  // ID elementu, w którym wyświetli się formularz
-                mode: 'popup',
-            });
-
-            google.accounts.id.prompt();
-        };
+       
     </script>
 </body>
 </html>
