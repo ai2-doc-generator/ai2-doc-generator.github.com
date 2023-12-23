@@ -12,9 +12,21 @@
     <div id="g_id_onload"
          data-client_id="728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com"
          data-context="signin"
+         
          data-login_uri="https://ai2-doc-generator.github.io/"
          data-itp_support="true">
     </div>
+
+
+
+    <div id="g_id_onload"
+     data-client_id="728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com"
+     data-context="use"
+     data-ux_mode="popup"
+     data-callback="onSignIn"
+     data-nonce=""
+     data-auto_prompt="false">
+</div>
 
     <!-- Inne elementy strony -->
 
@@ -38,9 +50,10 @@
             google.accounts.id.initialize({
                 client_id: '728550004774-fudopk6sc5if5aomc2a5o2bmf81u14og.apps.googleusercontent.com',
                 callback: onSignIn, // Funkcja wywoływana po zalogowaniu
-                auto_prompt: true,  // Automatyczne wyświetlanie formularza logowania
-                context: 'signin',  // Określenie kontekstu, tutaj logowanie
+                auto_prompt: false,  // Automatyczne wyświetlanie formularza logowania
+                context: 'use',  // Określenie kontekstu, tutaj logowanie
                 prompt_parent_id: 'g_id_onload',  // ID elementu, w którym wyświetli się formularz
+                mode: 'popup',
             });
 
             google.accounts.id.prompt();
